@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by Agababaev Dmitriy © 2020
- * d.agababaev @ duncat.net
- * License MIT
- */
+// ------------------------------------------------------------------------------
+//  © Copyright (с) 2020
+//  Author: Dmitri Agababaev, d.agababaev@duncat.net
+//
+//  Redistributions and use of source code, with or without modification, are
+//  permitted that retain the above copyright notice
+//
+//  License: MIT
+// ------------------------------------------------------------------------------
 
 require_once 'lib/ProxmoxVE_API.class.php';
 
