@@ -1,10 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: agdsign
- * Date: 21.09.2020
- * Time: 18:44
- */
+// ------------------------------------------------------------------------------
+//  © Copyright (с) 2020
+//  Author: Dmitri Agababaev, d.agababaev@duncat.net
+//
+//  Redistributions and use of source code, with or without modification, are
+//  permitted that retain the above copyright notice
+//
+//  License: MIT
+// ------------------------------------------------------------------------------
+
 class PVE_Exception extends RuntimeException {}
 
 class ProxmoxVE_API
