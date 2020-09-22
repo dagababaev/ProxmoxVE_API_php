@@ -12,20 +12,20 @@
 require_once 'lib/ProxmoxVE_API.class.php';
 
 $param = [
-    'hostname' => 'pve.host.com',
-    'username' => 'username',
-    'password' => 'password',
-    'realm' => 'pam', // pam or pve
-    'port' => 8006,
-    'ssl' => false
+    'hostname' => 'pve.host.com', // required
+    'username' => 'username', // required
+    'password' => 'password', // required
+    'realm' => 'pam', // pam or pve auth type
+    'port' => 8006, // set if the port is not standard. optional
+    'ssl' => false // not required if false. optional
 ];
 
 $pve = new ProxmoxVE_API($param);
 
 if ($pve->login()) {
 
-    $node = 'pve-01';
-    $vmid = '200';
+    $node = 'pve-01'; // node name
+    $vmid = '200'; // VM uniq ID
 
     // SAMPLES
 
@@ -66,6 +66,6 @@ if ($pve->login()) {
     var_dump($result);
 
     // noVNC
-    # echo '<iframe src="'.$pve->noVNC('pve-01', 100).'" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>';
+    # echo '<iframe src="'.$pve->noVNC($node, $vmid).'" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>';
 
 }
