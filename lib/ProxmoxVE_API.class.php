@@ -26,7 +26,7 @@ class ProxmoxVE_API
     protected $CSRFPToken = null;
 
     public function __construct ($param) {
-        $this->hostname = filter_var($param['hostname'], FILTER_VALIDATE_IP) ? gethostbyname($param['hostname']) : $param['hostname'];
+        $this->hostname = (filter_var($param['hostname'], FILTER_VALIDATE_IP) !== false) ? gethostbyname($param['hostname']) : $param['hostname'];
         $this->hostname = $param['hostname'];
         $this->username = $param['username'];
         $this->password = $param['password'];
@@ -44,9 +44,9 @@ class ProxmoxVE_API
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['username' => $this->username,
-                                                                      'password' => $this->password,
-                                                                      'realm' => $this->realm
-                                                                    ]));
+                                                               'password' => $this->password,
+                                                               'realm' => $this->realm]));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->ssl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->ssl);
         $response = curl_exec($ch);
         $login_response = curl_getinfo($ch);
@@ -94,7 +94,8 @@ class ProxmoxVE_API
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["CSRFPreventionToken:{$this->CSRFPToken}"]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_COOKIE, "PVEAuthCookie={$this->ticket}");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->ssl);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->ssl);
         $response = curl_exec($ch);
         curl_close($ch);
 
@@ -124,7 +125,7 @@ class ProxmoxVE_API
             'port'      => $conf['port']
         ]);
         setcookie('PVEAuthCookie', $this->ticket , 0, '/', $_SERVER['HTTP_HOST'], false);
-        $src = "https://{$this->hostname}:8006/?console=kvm&novnc=1&node={$node}&resize=scale&vmid={$vmid}&path=api2/json";
+        $src = "https://{$this->hostname}:{$this->port}/?console=kvm&novnc=1&node={$node}&resize=scale&vmid={$vmid}&path=api2/json";
         $src .= "/nodes/{$node}/qemu/{$vmid}/vncwebsocket/port/".$conf['port'];
 
         return $src;

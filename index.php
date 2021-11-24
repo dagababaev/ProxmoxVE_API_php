@@ -12,26 +12,27 @@
 require_once 'lib/ProxmoxVE_API.class.php';
 
 $param = [
-    'hostname' => 'pve.host.com', // required
+    'hostname' => 'pve.host.com', // required (domain name or IPv4)
     'username' => 'username', // required
     'password' => 'password', // required
     'realm' => 'pam', // pam or pve auth type
-    'port' => 8006, // set if the port is not standard. optional
+    'port' => 8006, // if the port is changed. optional
     'ssl' => false // not required if false. optional
 ];
 
 $pve = new ProxmoxVE_API($param);
 
-if ($pve->login()) {
+$node = 'pve-01'; // node name
+$vmid = '200'; // VM uniq ID
 
-    $node = 'pve-01'; // node name
-    $vmid = '200'; // VM uniq ID
+if ($pve->login()) {
 
     // SAMPLES
 
     // Without parameters
     // GET
-    # $result = $pve->get("/cluster/nextid");
+    $result = $pve->get("/cluster/nextid");
+
     // POST
     # $result = $pve->post("/nodes/{$node}/qemu/{$vmid}/status/start");
     // PUT
